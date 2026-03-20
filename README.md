@@ -1,249 +1,235 @@
 # QuickBite-Delivery-System-GuideWire
+ 
+### Phase 1 — Food Delivery Platform (Swiggy/Zomato Inspired)
 
-🧠 Problem Statement (Restated)
+---
 
-Build a Phase 1 MVP of a food delivery platform that enables:
+## 🧠 Problem Statement
 
-Users to browse restaurants and menus
+Build a **Phase 1 MVP** of a food delivery platform that enables:
 
-Place orders seamlessly
+- Users to browse restaurants and menus  
+- Place orders seamlessly  
+- Restaurants to receive and process orders  
+- Basic delivery workflow (no real-time tracking yet)  
 
-Restaurants to receive and process orders
+👉 Focus: **Speed, simplicity, and core transaction loop**  
+**Discovery → Order → Fulfillment**
 
-Basic delivery flow (no real-time tracking yet)
+---
 
-Focus: Speed, simplicity, and core transaction loop (discovery → order → fulfillment)
+## ⚙️ Assumptions
 
-⚙️ Assumptions
+To keep Phase 1 lean and buildable:
 
-Since details are limited, we assume:
+- 🏙️ Single city operation  
+- 📍 No real-time GPS tracking (Phase 2 feature)  
+- 💳 Payments: Cash on Delivery / Mock payment  
+- 🧑‍💻 Admin panel skipped (direct DB access)  
+- 🔐 Authentication: JWT-based login  
 
-Single city operation (no geo-scaling yet)
+---
 
-No real-time GPS tracking (Phase 2 feature)
+## 🏗️ High-Level Architecture
 
-Payment = Cash on Delivery (or mocked online payment)
 
-Admin panel is optional (basic DB access instead)
-
-Authentication = simple JWT-based login
-
-🏗️ High-Level Architecture
-Client (Web/Mobile)
-      ↓
+Client (Web / Mobile)
+↓
 API Gateway (Backend)
-      ↓
+↓
 Core Services:
-  - User Service
-  - Restaurant Service
-  - Order Service
-      ↓
-Database (SQL)
+• User Service
+• Restaurant Service
+• Order Service
+↓
+Database (PostgreSQL)
 
-Optional (Phase 1.5):
 
-Redis (caching popular restaurants)
+### Optional (Future Enhancements)
+- Redis (caching popular restaurants)  
+- Message Queue (order events)  
 
-Message Queue (order events)
+---
 
-🔥 Core MVP Features
-👤 User
+## 🔥 Core MVP Features
 
-Sign up / Login (JWT)
+### 👤 User
+- Sign up / Login (JWT)
+- Browse restaurants
+- View menus
+- Place orders
 
-Browse restaurants
+---
 
-View menu
+### 🍽️ Restaurant
+- Register restaurant
+- Add / update menu items
+- Accept / reject orders
 
-Place order
+---
 
-🍽️ Restaurant
+### 📦 Order Flow
 
-Register restaurant
-
-Add/update menu items
-
-Accept/reject orders
-
-📦 Order Flow
-
-Create order
-
-Track status:
 
 PLACED → ACCEPTED → PREPARING → OUT_FOR_DELIVERY → DELIVERED
 
-🗄️ Data Model (Sketch)
-User
 
-id
+- Create order  
+- Track order status  
+- Update order lifecycle  
 
-name
+---
 
-phone
+## 🗄️ Data Model (Schema Overview)
 
-address
+### User
+- id  
+- name  
+- phone  
+- address  
 
-Restaurant
+### Restaurant
+- id  
+- name  
+- location  
+- rating  
 
-id
+### MenuItem
+- id  
+- restaurant_id  
+- name  
+- price  
+- availability  
 
-name
+### Order
+- id  
+- user_id  
+- restaurant_id  
+- status  
+- total_price  
+- created_at  
 
-location
+### OrderItem
+- id  
+- order_id  
+- menu_item_id  
+- quantity  
 
-rating
+---
 
-MenuItem
+## 🧪 Technology Stack
 
-id
+### Backend
+- Node.js (Express) OR FastAPI (Python)  
+- REST APIs  
 
-restaurant_id
+### Database
+- PostgreSQL  
 
-name
+### Frontend (Optional)
+- React (Web UI)  
+- OR Postman (API testing only)  
 
-price
+### Authentication
+- JWT (JSON Web Tokens)  
 
-availability
+---
 
-Order
+## 🔌 API Design
 
-id
+### 🔐 Auth
+- `POST /auth/register`
+- `POST /auth/login`
 
-user_id
+---
 
-restaurant_id
+### 🍽️ Restaurants
+- `GET /restaurants`
+- `GET /restaurants/{id}`
+- `POST /restaurants` (owner)
 
-status
+---
 
-total_price
+### 📋 Menu
+- `GET /restaurants/{id}/menu`
+- `POST /menu` (owner)
 
-created_at
+---
 
-OrderItem
+### 📦 Orders
+- `POST /orders`
+- `GET /orders/{id}`
+- `PATCH /orders/{id}/status`
 
-id
+---
 
-order_id
+## 🚀 Deployment Notes
 
-menu_item_id
+- Use `.env` for secrets (DB URL, JWT secret)  
+- Enable CORS for frontend  
+- Optional: Dockerize the app  
+- Seed database with sample restaurants  
 
-quantity
+---
 
-🧪 Technology Choices
-Backend
+## 📁 Project Structure
 
-Node.js (Express) or FastAPI (Python)
 
-REST API (simple > overengineered)
-
-Database
-
-PostgreSQL (relational clarity)
-
-Frontend (optional for MVP)
-
-React (web dashboard)
-
-Or skip UI → use Postman for testing
-
-Auth
-
-JWT-based authentication
-
-Hosting
-
-Backend: Render / Railway / AWS EC2
-
-DB: Supabase / RDS / Neon
-
-🔌 Minimal API Design
-Auth
-
-POST /auth/register
-
-POST /auth/login
-
-Restaurants
-
-GET /restaurants
-
-GET /restaurants/{id}
-
-POST /restaurants (owner)
-
-Menu
-
-GET /restaurants/{id}/menu
-
-POST /menu (owner)
-
-Orders
-
-POST /orders
-
-GET /orders/{id}
-
-PATCH /orders/{id}/status
-
-🚀 Deployment Notes
-
-Use .env for secrets (DB URL, JWT secret)
-
-Enable CORS for frontend
-
-Use Docker (optional but clean)
-
-Seed database with sample restaurants
-
-📁 Minimal Project Structure
 rapid-eats-mvp/
 │── src/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── middleware/
-│   └── app.js
+│ ├── controllers/
+│ ├── models/
+│ ├── routes/
+│ ├── services/
+│ ├── middleware/
+│ └── app.js
 │
 │── config/
-│── scripts/ (seed data)
+│── scripts/ # seed data
 │── tests/
 │── .env.example
 │── package.json / requirements.txt
 │── README.md
-🧭 Execution Plan (Phase 1)
 
-Setup backend + DB connection
 
-Implement auth (JWT)
+---
 
-Build restaurant + menu APIs
+## 🧭 Execution Plan (Phase 1)
 
-Implement order flow
+1. Setup backend + database connection  
+2. Implement authentication (JWT)  
+3. Build restaurant & menu APIs  
+4. Implement order flow  
+5. Seed data + test via Postman  
+6. Deploy backend  
 
-Seed data + test via Postman
+---
 
-Deploy
+## ⚠️ Constraints & Simplifications
 
-⚠️ Missing Details (Handled with Defaults)
+- Payment gateway → mocked / COD  
+- Delivery logistics → manual status updates  
+- Multi-city scaling → not included  
+- Notifications → not included  
 
-Payment gateway → mocked / COD
+---
 
-Delivery logistics → manual status updates
+## 🌱 Future Scope (Phase 2+)
 
-Multi-city scaling → ignored for now
+- 📍 Live delivery tracking (WebSockets)  
+- 💳 Payment integration (Stripe / Razorpay)  
+- 🤖 Recommendation engine  
+- ⭐ Ratings & reviews  
+- 🧑‍💻 Admin dashboard  
 
-Notifications → not included
+---
 
-🌱 Future Scope (Phase 2+)
+## ✅ Conclusion
 
-Live delivery tracking (WebSockets)
+RapidEats MVP delivers the **core food delivery loop**:
 
-Payment integration (Stripe/Razorpay)
+👉 Discover → Order → Fulfill  
 
-Recommendation engine
+Built for **speed, clarity, and scalability**, this lays the foundation for a full-fledged system like Swiggy/Zomato.
 
-Ratings & reviews
-
-Admin dashboard
+---
