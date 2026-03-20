@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{ restaurant.name }}{% endblock %}
+{% block content %}
+<h1>{{ restaurant.name }}</h1>
+<p>Location: {{ restaurant.location }}</p>
+<h2>Menu</h2>
+<div class='list'>
+    {% if menu_items %}
+        {% for item in menu_items %}
+            <div class='card'>
+                <h3>{{ item.name }}</h3>
+                <p>Price: ${{ '%.2f'|format(item.price) }}</p>
+                <form action='{{ url_for('add_to_cart', item_id=item.id) }}' method='post'>
+                    <button class='button' type='submit'>Add to Cart</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No items available.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+body { font-family: Arial, sans-serif; background: #f3f4f6; color: #333; margin:0; padding:0; }
+header .navbar { background:#0066cc; padding:15px; display:flex; gap:12px; }
+header .navbar a { color: #fff; text-decoration:none; font-weight:bold; }
+.container { max-width: 960px; margin: 20px auto; padding: 0 16px; }
+.list { display:grid; gap:12px; }
+.card { background:#fff; padding:14px; border-radius:8px; border:1px solid #ddd; }
+.button { background:#0066cc; color:#fff; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; }
+table { width:100%; border-collapse:collapse; margin-bottom: 12px; }
+th, td { padding:8px; border: 1px solid #ddd; }
+.success { color: #155724; background:#d4edda; padding:8px; border-radius:4px; }

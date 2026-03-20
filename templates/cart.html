@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<h1>Cart</h1>
+{% if items %}
+<table>
+    <thead><tr><th>Item</th><th>Qty</th><th>Subtotal</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.qty }}</td>
+            <td>${{ '%.2f'|format(item.subtotal) }}</td>
+            <td>
+                <form action='{{ url_for('remove_from_cart', item_id=item.id) }}' method='post' style='display:inline;'>
+                    <button type='submit'>Remove</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p>Total: ${{ '%.2f'|format(total) }}</p>
+<form action='{{ url_for('clear_cart') }}' method='post' style='display:inline;'>
+    <button type='submit'>Clear Cart</button>
+</form>
+<form action='{{ url_for('place_order') }}' method='post' style='display:inline;margin-left:10px;'>
+    <button type='submit'>Place Order</button>
+</form>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}
